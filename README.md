@@ -1,6 +1,6 @@
 # Match the CRC32 value of files
 
-To make my [Almost-Narchissist](https://github.com/bediger/Self-replicating-go) program,
+To make my [Almost-Narcissist](https://github.com/bediger4000/Self-replicating-go#almost-narcissist--program) program,
 I needed to be able to match the CRC32 value of a given file, the source of the
 Almost-Narcissist itself.  I could only find a PHP CRC32-matcher, and it didn't
 seem to work.
