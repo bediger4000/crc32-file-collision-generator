@@ -16,7 +16,7 @@ func main() {
 		panic(err)
 	}
 
-	crc := crc32_bitoriented(buffer, len(buffer))
+	crc := crc32_bitoriented(buffer)
 
 	fmt.Printf("%d\t%08x\n", len(buffer), crc)
 
