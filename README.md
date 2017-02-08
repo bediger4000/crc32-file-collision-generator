@@ -1,5 +1,6 @@
-# Matching CRC32 of files
+# Match the CRC32 value of files
 From:
+
     Reversing CRC - Theory and Practice
     HU Berlin Public Report SAR-PR-2006-05
     Martin Stigge, Henryk Plotz, Wolf Muller, Jens-Peter Redlich
