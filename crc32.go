@@ -7,9 +7,6 @@ import (
 )
 
 func main() {
-	var all []byte
-	var count int
-	buffer := make([]byte, 1024)
 	for _, fname := range os.Args[1:] {
 		fin, err := os.Open(fname)
 		if err != nil {
@@ -17,6 +14,9 @@ func main() {
 				fname, err)
 			os.Exit(1)
 		}
+		var all []byte
+		var count int
+		buffer := make([]byte, 1024)
 		for {
 			rdsz, err2 := fin.Read(buffer)
 			if rdsz == 0 {
@@ -30,10 +30,10 @@ func main() {
 			all = append(all, buffer...)
 		}
 		fin.Close()
+		fmt.Printf("%s, read %d bytes\n", fname, count)
+		var cksum uint32 = crc32.ChecksumIEEE(all[0:count])
+		fmt.Printf("\tCRC32: %x\n", cksum)
 	}
-	fmt.Printf("len(all) = %d, read %d bytes\n", len(all), count)
-	var cksum uint32 = crc32.ChecksumIEEE(all[0:count])
-	fmt.Printf("IEEE CRC32: %x\n", cksum)
 
 	os.Exit(0)
 }
