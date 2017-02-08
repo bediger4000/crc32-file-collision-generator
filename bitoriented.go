@@ -23,7 +23,7 @@ func main() {
 	os.Exit(0)
 }
 
-func crc32_bitoriented(buffer []byte, length int) (uint32) {
+func crc32_bitoriented(buffer []byte) (uint32) {
 	var crcreg uint32 = INITXOR
 
 	for _, c := range buffer {
