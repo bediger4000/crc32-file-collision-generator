@@ -21,7 +21,7 @@ func main() {
 
 	crc_to_match := crc32_tabledriven(buffer)
 
-	fmt.Printf("%d\t%08x\n", len(buffer), crc_to_match)
+	fmt.Fprintf(os.Stderr, "File to match has length %d, CRC32 value %08x\n", len(buffer), crc_to_match)
 
 	buffer, err = ioutil.ReadFile(os.Args[2])
 	if err != nil {
@@ -30,22 +30,31 @@ func main() {
 
 	crc_to_make_match := crc32_tabledriven(buffer)
 
-	fmt.Printf("%d\t%08x\n", len(buffer), crc_to_make_match)
+	fmt.Fprintf(os.Stderr, "File to get to match has length %d, CRC32 value %08x\n", len(buffer), crc_to_make_match)
 
 	bytes_to_match := fix_crc(crc_to_match, crc_to_make_match)
 
-	fmt.Printf("Bytes to match: %08x\n", bytes_to_match)
+	fmt.Fprintf(os.Stderr, "Bytes to match: %08x\n", bytes_to_match)
 
 	var i uint32
+	var bytes []byte
 	for i = 0; i < 4; i++ {
 		b := (bytes_to_match >> (i*8)) & 0xff
-		fmt.Printf("%02x ", b)
+		bytes = append(bytes, byte(b))
+		fmt.Fprintf(os.Stderr, "%02x ", b)
 		buffer = append(buffer, byte(b))
 	}
-	fmt.Printf("\n")
+	fmt.Fprintf(os.Stderr, "\n")
+
+	wrsz, werr := os.Stdout.Write(bytes)
+	if werr != nil || wrsz != 4 {
+		panic(werr)
+	}
 
 	matching_crc := crc32_tabledriven(buffer)
-	fmt.Printf("%d\t%08x\n", len(buffer), matching_crc)
+	if matching_crc != crc_to_match {
+		fmt.Fprintf(os.Stderr, "Problem making 2nd file match. With new bytes, CRC32 is %08x\n", matching_crc)
+	}
 	
 	os.Exit(0)
 }
